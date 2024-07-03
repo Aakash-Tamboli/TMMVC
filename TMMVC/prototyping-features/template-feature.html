@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search String Pattern</title>
+</head>
+
+<body>
+    <p>God is {{Great}}</p>
+    <p>God is known for {{Systamatic Miracle}}</p>
+    <p>God gives {{himself}}, to save the world {{null}}</p>
+</body>
+<script>
+    const regularExpression = /\{\{(.*?)\}\}/g; // credit goes to chat-gpt
+    let original = document.body.innerHTML;
+
+    let result = undefined;
+    const regularExpressionWithWords = {};
+    while (true) {
+        /*
+            Acc. to observation:
+            0th index contains word with regularExpression thing
+            1st index contains only word
+            2nd index contains groups (whic I don't know what it is)
+            3rd index contains index where that word with regular expression found
+        */
+        result = regularExpression.exec(original);
+        if (result == null) break;
+        regularExpressionWithWords[result[0]] = result[1];
+    }
+
+    const words = Object.entries(regularExpressionWithWords);
+
+    const ds = {
+        "Great": "Great",
+        "Systamatic Miracle": "Systamatic Miracle",
+        "himself": "Himself",
+    };
+
+
+    for (let i = 0; i < words.length; i++) {
+        if (words[i][1] == "" || words[i][1] == "null") {
+            // it means TMMVC user uses {{}} but not give any variable name then space will be put
+            original = original.replace(words[i][0], "");
+        }
+        else if(ds[words[i][1]] == undefined){
+            // it means TMMVC user uses {{varible_name}} where variable name is not present in ds as key then I'l, not replace with anything
+            continue;
+        }
+        else {
+            original = original.replace(words[i][0], ds[words[i][1]]);
+        }
+    }
+    document.body.innerHTML = original;
+
+</script>
+
+</html>

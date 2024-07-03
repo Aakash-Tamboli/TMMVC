@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search String Pattern</title>
+</head>
+<body>
+    <h1>(a) Sub-Assignment of 2nd Assignment</h1>
+    <button type="button" onclick="pqr()">Click Me</button>
+    <h1>(b) Sub-Assignment of 2nd Assignment</h1>
+    <button type="button" onclick="xyz()">Click Me</button>
+    
+</body>
+<script>
+    function abcd(x,y){
+        alert(x+y)
+        return x+y;
+    }
+
+    function pqr(){
+        let fn="abcd";
+        let e=10;
+        let f=20;
+        // because of security concern acc. to google and I'm not using eval function which was we used while making TMJRock
+        let result = window[fn](e,f);
+        console.log(result);
+    }
+
+    class Bulb{
+        ijk(e,f,g){
+            return e+f+g;
+        }
+    }
+
+    function xyz(){
+        let k=new Bulb();
+        let fn="ijk";
+        let p=10;
+        let q=20;
+        let r=20;
+        let result = k[fn](p,q,r);
+        alert(result);
+    }
+
+</script>
+
+</html>

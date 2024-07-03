@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search String Pattern</title>
+</head>
+
+<body>
+
+</body>
+<script>
+
+    const target ={
+        name: "Aakash",
+        age : 25
+    };
+
+    Object.keys(target).forEach((key)=>{
+        let value = target[key];
+        Object.defineProperty(target,key,{
+            get(){
+                return value;
+            },
+            set(newValue){
+                console.log("Object state has been changed");
+                value=newValue;
+            },
+            configurable: true,
+            enumerable: true,
+        });
+    });
+
+    target.name = "Rahul";
+    target.age = 27;
+</script>
+
+</html>
