@@ -4,31 +4,18 @@
 <head>
     <meta charset='utf-8'>
     <title>TMMVC Examples</title>
-    <style>
-        #addComponent,
-        #editComponent,
-        #deleteComponent,
-        #viewComponent {
-            border: 1px solid black;
-            padding: 10px;
-            margin: 5px;
-        }
-    </style>
-
     <script>
 
-
-        // above code is written by TMMVC Creator
         // global variables
+
         var tmmvc = {
             "startup": [],
             "model": null,
-            "controller": null,
         };
 
         const TMMVC_BIND_TO = "tmmvc-bind-to";
         const TMMVC_ATTRIBUTE = "tmmvc-attribute";
-        const TMMVC_IF = "tmmvc-if";
+
 
         tmmvc.onStartup = function (callBack) {
             tmmvc.startup[tmmvc.startup.length] = callBack;
@@ -40,13 +27,13 @@
         ..
         ..
         static B=class{
-                    static func(){
+        static func(){
         ..
         }
         }
         }
-                we can access A.B.func()
-                */
+        we can access A.B.func()
+        */
 
         class Components {
 
@@ -85,15 +72,20 @@
                     if (tmmvc.model[key] == "") {
                         // allCorrespondingRadioButton based on name factor
                         allCorrespondingRadioButton = document.getElementsByName(tag.name);
-                        for (let j = 0; j < allCorrespondingRadioButton.length; j++) { allCorrespondingRadioButton[j].checked = false; }
-                    } else {
-                        allCorrespondingRadioButton = document.getElementsByName(tag.name); for (let j = 0; j <
-                            allCorrespondingRadioButton.length; j++) {
+                        for (let j = 0; j < allCorrespondingRadioButton.length; j++) {
+                            allCorrespondingRadioButton[j].checked = false;
+                        }
+                    }
+                    else {
+                        allCorrespondingRadioButton = document.getElementsByName(tag.name);
+                        for (let j = 0; j < allCorrespondingRadioButton.length; j++) {
                             if (allCorrespondingRadioButton[j].value == tmmvc.model[key]) {
                                 allCorrespondingRadioButton[j].checked = true;
                             }
                         }
-                    } tag.addEventListener('click', (event) => {
+                    }
+
+                    tag.addEventListener('click', (event) => {
                         tmmvc.model[key] = event.target.value;
                     });
                 }
@@ -136,27 +128,31 @@
                     const options = tag.options;
                     if (Array.isArray(value)) {
                         /*
-                            Docs Marker
-                            I'll specify in docs that
-                            1st for using select & option feature user must take array props in DS,
-                            2nd if user want that by default some specify option is being select then
+                        Docs Marker
+                        I'll specify in docs that 
+                        1st for using select & option feature user must take array props in DS,
+                        2nd if user want that by default some specify option is being select then
                             guideline will be
                             Either Array must be contains boolean or 0|1 value as No. of
-                            times in an array as no. of options it taken
-                            3rd each option value represting array index
-                            4th whereas each options text is store in array
+                            times in an array as no. of options it taken 
+                        3rd each option value represting array index
+                        4th whereas each options text is store in array
                             For Self: I think I have to discuss about this feature with Sir,
-                            How it should be used by user.
-                            */
+                                        How it should be used by user.
+                        */
                         if (value.length == options.length) {
                             for (let i = 0; i < options.length; i++) {
-                                if (value[i] == "undefined") continue; else if (value[i] == true ||
-                                    value[i] == 1) { value[i] = options[i].text; options[i].selected = true; break; }
-                            } tag.addEventListener('click',
-                                (event) => {
-                                    let index = Number(event.target.value)
-                                    value[index] = options[index].text;
-                                });
+                                if (value[i] == "undefined") continue;
+                                else if (value[i] == true || value[i] == 1) {
+                                    value[i] = options[i].text;
+                                    options[i].selected = true;
+                                    break;
+                                }
+                            }
+                            tag.addEventListener('click', (event) => {
+                                let index = Number(event.target.value)
+                                value[index] = options[index].text;
+                            });
                         }
                     }
                 }
@@ -171,12 +167,12 @@
                         if (targetAttribute == "value") {
                             /*
                             Note on <textarea> and value
-                                                    For <textarea> elements, 
-                                                    it's important to note that setting the value attribute 
-                                                    via setAttribute may not update the displayed content in some browsers. 
-                                                    Instead, use the value property directly: 
-                                                                                    ~Source ChatGPT
-                                                    */
+                            For <textarea> elements, 
+                            it's important to note that setting the value attribute 
+                            via setAttribute may not update the displayed content in some browsers. 
+                            Instead, use the value property directly: 
+                                                            ~Source ChatGPT
+                            */
                             tag.value = value;
                         }
                         else if (targetAttribute == "defaultValue") {
@@ -227,7 +223,7 @@
                         original = original.replace(words[i][0], "");
                     }
                     else if (ds[words[i][1]] == undefined) {
-                        // it means TMMVC user uses {{ varible_name }} where variable name is not present in ds as key then I'll, not replace with anything
+                        // it means TMMVC user uses {{varible_name}} where variable name is not present in ds as key then I'll, not replace with anything
                         continue;
                     }
                     else {
@@ -250,7 +246,6 @@
                         set(newValue) {
                             value = newValue;
                             View.updateView();
-                            Controller.showElement();
                         },
                         configurable: true,
                         enumerable: true,
@@ -260,69 +255,7 @@
         }
 
 
-        class Pair {
-            constructor(first, second) {
-                this.first = first;
-                this.second = second;
-            }
-        }
 
-        class Controller {
-            static renderedElement = null;
-            static elements = new Map();
-
-            static hideElements(tags) {
-                let pair = null;
-                for (let i = 0; i < tags.length; i++) {
-                    if (tags[i].tagName === "DIV") {
-                        let key = tags[i].getAttribute(TMMVC_IF);
-                        if (!key || key.trim() === "") continue;
-                        let mode = key.substring(0, 4);
-                        if (mode !== "mode") continue;
-                        let modeValue = key.substring(7, key.indexOf('\'', 7));
-
-                        let children = tags[i].children;
-                        if (children != null && children != undefined) {
-                            for (let j = 0; j < children.length; j++) {
-                                if (children[j].hasAttribute("tmmvc-click")) {
-                                    let methodName = children[j].getAttribute("tmmvc-click");
-                                    children[j].addEventListener('click', () => {
-                                        tmmvc.controller[methodName]();
-                                    })
-                                }
-                            }
-                        }
-
-                        pair = new Pair(tags[i].parentNode, tags[i]);
-                        this.elements.set(modeValue, pair);
-                        tags[i].remove();
-                    }
-                }
-            }
-
-            static showElement() {
-                if (!tmmvc.model["mode"]) return;
-
-                const currentMode = tmmvc.model["mode"];
-
-                let pair = this.elements.get(currentMode);
-
-                let elementParent = pair.first;
-
-                let elementToShow = pair.second;
-
-                if (this.renderedElement) {
-                    let tag = document.querySelector("[tmmvc-if]");
-                    if (this.renderedElement.isEqualNode(tag)) {
-                        tag.remove();
-                    }
-                }
-
-                elementParent.appendChild(elementToShow)
-
-                this.renderedElement = elementToShow;
-            }
-        }
 
         function analyze(tags) {
             for (let i = 0; i < tags.length; i++) {
@@ -345,13 +278,6 @@
                     analyze(tags);
                 } // closing if when HTML Doc contains tags which applied tmmvc-attribute thing
             } // if model ends
-            if (tmmvc.controller != null) {
-                let tags = document.querySelectorAll("[tmmvc-if]");
-                if (tags != null && tags.length > 0) {
-                    Controller.hideElements(tags);
-                    Controller.showElement();
-                } // closing if when DOC contains tags which uses tmmvc-f thing
-            }// if controller ends
         } // init function ends
 
 
@@ -361,80 +287,29 @@
             View.updateView();
         });
 
-        // <!-- above section is written by TMMVC Framework creator -->
     </script>
-
+    <!-- above section is written by TMMVC Framework creator-->
+    <!-- below section is written by TMMVC user-->
     <script>
-        //     <!-- below section is written by TMMVC user-->
-        class CustomerManager {
-            ds = {
-                mode: "",
-            };
-
-            add() {
-                alert("Add related logic is being called by TMMVC Framework");
-            }
-            edit() {
-                alert("Edit related logic is being called by TMMVC Framework");
-            }
-            delete() {
-                alert("Delete related logic is being called by TMMVC Framework");
-            }
-            view() {
-                alert("View related logic is being called by TMMVC Framework");
-            }
-        }
-
-        var customerManager = new CustomerManager();
+        var ds = {
+            whoIsGreat: "God",
+            num: null,
+        };
 
         tmmvc.onStartup(function () {
-            tmmvc.controller = customerManager;
-            tmmvc.model = customerManager.ds;
+            tmmvc.model = ds;
         });
 
-        var counter = 0;
-        function changeComponent() {
-            counter++;
-            if (counter > 4) counter = 1;
-            if (counter == 1) customerManager.ds["mode"] = 'A';
-            else if (counter == 2) customerManager.ds["mode"] = 'D';
-            else if (counter == 3) customerManager.ds["mode"] = 'E';
-            else if (counter == 4) customerManager.ds["mode"] = 'V';
+        function doSomething() {
+            ds.num = 22;
         }
-
     </script>
-
 </head>
 
 <body>
-    <div id="addComponent" tmmvc-if="mode=='A'">
-        Name: &emsp; <input type='text'> <br>
-        Gender: &emsp; Male <input type='radio' name='gender' value='M'> &emsp; Female <input type='radio' name='gender'
-            value='F'> <br>
-        <br>
-        <button type='button' tmmvc-click="add">Add</button>
-    </div>
-    <div id="editComponent" tmmvc-if="mode=='E'">
-        <h1>Edit Component</h1>
-        Name: &emsp; <input type='text'> <br>
-        Gender: &emsp; Male <input type='radio' name='gender' value='M'> &emsp; Female <input type='radio' name='gender'
-            value='F'> <br>
-        <br>
-        <button type='button' tmmvc-click="edit">Edit</button>
-    </div>
-    <div id="deleteComponent" tmmvc-if="mode=='D'">
-        <h1>Delete Component</h1>
-        Name of Student you want to delete: &emsp; <input type='text'> <br>
-        <br>
-        <button type='button' tmmvc-click="delete">Delete</button>
-    </div>
-    <div id="viewComponent" tmmvc-if="mode=='V'">
-        <h1>List Component</h1>
-        <h1>Assume some list of customer will be shown here</h1>
-        <button type='button' tmmvc-click="view">Click to fetch list</button>
-    </div>
-
-    <button type="button" onclick="changeComponent()">ChangeComponent</button>
+    <h1>{{whoIsGreat}} is Great</h1>
+    <h3 style="text-align:center">{{num}}</h3>
+    <button type='button' onclick="doSomething()">Click Me for changing Change Value</button>
 </body>
 
 </html>

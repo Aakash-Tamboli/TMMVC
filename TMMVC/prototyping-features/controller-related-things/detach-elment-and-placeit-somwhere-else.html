@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search String Pattern</title>
+</head>
+
+<body>
+    <div id="originalParent">
+        <p id="elementToMove">This element will be moved</p>
+    </div>
+    <p>
+    <h3>God is Great</h3>
+    <h3>God is Great</h3>
+    <h3>God is Great</h3>
+    <h3>God is Great</h3>
+    <h3>God is Great</h3>
+    <h3>God is Great</h3>
+    <h3>God is Great</h3>
+    </p>
+    <div id="newParent">
+        <p>This is the new location</p>
+    </div>
+    <button type="button" onclick="deleteElement()">Click Me to delete</button>
+    <button type="button" onclick="reInsert()">ReInsert</button>
+</body>
+<script>
+    var elementToMove = undefined;
+    function deleteElement() {
+        let originalParent = document.querySelector("#originalParent");
+        elementToMove = document.querySelector("#elementToMove");
+        // removing element 
+        elementToMove = originalParent.removeChild(elementToMove);
+
+    }
+
+    function reInsert() {
+        let originalParent = document.querySelector("#originalParent");
+        // placing different location
+        originalParent.appendChild(elementToMove)
+}
+</script>
+
+</html>
